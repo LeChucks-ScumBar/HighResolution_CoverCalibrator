@@ -32,10 +32,10 @@
 //----- (UA) USER-ADJUSTABLE OPTIONS ------
 #define COVER_INSTALLED //comment out if not utilized
 #define LIGHT_INSTALLED //comment out if not utilized
-#define HEATER_INSTALLED //comment out if not utilized
+//#define HEATER_INSTALLED //comment out if not utilized
 #define ENABLE_SERIAL_CONTROL //comment out if not utilized
 #define ENABLE_MANUAL_CONTROL //comment out if not utilized
-#define ENABLE_SAVING_TO_MEMORY //comment out if not utilized
+//#define ENABLE_SAVING_TO_MEMORY //comment out if not utilized
 //#define SHOW_HEARTBEAT //for debugging purposes only. shows loop is active, uncomment to flash builtin led
 const uint32_t serialSpeed = 115200; //values are: (9600, 19200, 38400, 57600, (default 115200), 230400)
 
@@ -67,7 +67,7 @@ const uint8_t secondaryServoCloseCoverAngle = 180; //position angle servo closes
 //#define USE_SINE
 
 //----- (UA) (LIGHT) -----
-uint8_t maxBrightness = 255; //choose one of the following max number of steps: (max # of levels:steps between each value) -> ((light will be on or off 1:255), default 5:51, 17:15, 51:5, 85:3, (default 255:1))
+uint16_t maxBrightness = 4095; //choose one of the following max number of steps: (max # of levels:steps between each value) -> ((light will be on or off 1:255), default 5:51, 17:15, 51:5, 85:3, (default 255:1))
 bool autoON = false; //adjust only if using manual-only mode, see manual for details 
 
 //----- (UA) (HEATER) -----
@@ -76,12 +76,12 @@ const float deltaPoint = 5.0;  //(degrees) target temperature difference above a
 
 //----- (UA) (HEATER) NUMBER OF HEATING MODULES -----
 //----- UNCOMMENT UP TO TWO (2) HEATERS, SEE MANUAL FOR DETAILS -----
-#define HEATER_ONE_INSTALLED
-#define HEATER_TWO_INSTALLED
+//#define HEATER_ONE_INSTALLED
+//#define HEATER_TWO_INSTALLED
 
 //----- (UA) (HEATER) TEMPERATURE & HUMIDTY SENSOR -----
 //----- UNCOMMENT ONLY ONE OPTION, SEE MANUAL FOR DETAILS -----
-#define ENABLE_BME280
+//#define ENABLE_BME280
 //#define ENABLE_DHT22
 
 //----- (UA) (BUTTONS) -----
@@ -176,13 +176,13 @@ uint8_t heaterState; //reports # 0:NotPresent, 1:Off, 3:On, 4:Unknown, 5:Error, 
 
 //----- LIGHT -----
 #ifdef LIGHT_INSTALLED
-  const uint8_t brightnessSteps = 255 / maxBrightness; //set steps size based on maxBrightness
+  const uint16_t brightnessSteps = 4095 / maxBrightness; //set steps size based on maxBrightness
   uint32_t startLightTimer; //holds start time for light
   uint32_t stabilizeTime; //set delay to give light time to settle
-  uint8_t lightValue = 0; //lightValue received and adjusted for Arduino
-  uint8_t broadbandValue; //holds saved EEPROM value
-  uint8_t narrowbandValue; //holds saved EEPROM value
-  uint8_t previousLightPanelValue; //holds last ON value
+  uint16_t lightValue = 0; //lightValue received and adjusted for Arduino
+  uint16_t broadbandValue; //holds saved EEPROM value
+  uint16_t narrowbandValue; //holds saved EEPROM value
+  uint16_t previousLightPanelValue; //holds last ON value
 #endif
 
 //----- MANUAL OPERATION -----
@@ -348,7 +348,7 @@ void initializeVariables(){
   
       //set default for last brigtness value if none exists
       if (previousLightPanelValue < 0){
-        previousLightPanelValue = 255;
+        previousLightPanelValue = 4095;
       }
     
       //set default broadband value if none exists
@@ -358,7 +358,7 @@ void initializeVariables(){
     
       //set default narrowband value if none exists
       if (narrowbandValue <= 0){
-        narrowbandValue = 255;
+        narrowbandValue = 4095;
       }
     #endif
   #else
@@ -368,7 +368,7 @@ void initializeVariables(){
     #endif
     
     #ifdef LIGHT_INSTALLED
-      previousLightPanelValue = 255; //sets default value
+      previousLightPanelValue = 4095; //sets default value
       broadbandValue = 0; //set for operation
       narrowbandValue = 0; //set for operation
     #endif

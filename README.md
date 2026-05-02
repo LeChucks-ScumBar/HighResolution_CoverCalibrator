@@ -1,4 +1,19 @@
+This project ist forked from https://github.com/10thTeeAstronomy/DarkLight_CoverCalibrator
+
+I have developed a high-resolution flat panel. It has 4,095 brightness levels instead of just 255. In addition, the controller uses an adjustable current source without PWM, enabling constant brightness without flickering.
+
+Current status as of May 2, 2026: 
+- Software runs on Arduino and Nina
+- Circuit diagram created and simulated
+
+Pending
+- Upload circuit diagram/PCB to Git
+- Order/build electronics
+- 3D printing
+- Test assembly
+____________________________________Original text_________________________________________________
 # DarkLight Cover/Calibrator (DLC)
+https://www.youtube.com/watch?v=G-Wl4XsGtBc
 
 The **DarkLight Cover/Calibrator (DLC)** is a DIY project to build a motorized telescope cover, flat panel, or a combined flip-flat system. Designed for versatility and modularity, the DLC supports a variety of setups:
 
