@@ -1,0 +1,16 @@
+Added Component: Designator=Drill1(M3.0_M)
+Add component (AddParameter): Name = ".CHECKED PCB"; Value = "RF"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = ".CHECKED SCH"; Value = "RF"; VariantName = "[No Variations]"
+Added Component: Designator=Drill2(M3.0_M)
+Add component (AddParameter): Name = ".CHECKED PCB"; Value = "RF"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = ".CHECKED SCH"; Value = "RF"; VariantName = "[No Variations]"
+Added Component: Designator=Drill3(M3.0_M)
+Add component (AddParameter): Name = ".CHECKED PCB"; Value = "RF"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = ".CHECKED SCH"; Value = "RF"; VariantName = "[No Variations]"
+Added Component: Designator=Drill4(M3.0_M)
+Add component (AddParameter): Name = ".CHECKED PCB"; Value = "RF"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = ".CHECKED SCH"; Value = "RF"; VariantName = "[No Variations]"
+Added Member To Class: ClassName=Sheet1 Member=Component Drill1 M3.0_M
+Added Member To Class: ClassName=Sheet1 Member=Component Drill2 M3.0_M
+Added Member To Class: ClassName=Sheet1 Member=Component Drill3 M3.0_M
+Added Member To Class: ClassName=Sheet1 Member=Component Drill4 M3.0_M
