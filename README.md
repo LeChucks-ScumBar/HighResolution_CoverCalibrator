@@ -11,7 +11,7 @@ Pending
 - Order/build electronics
 - 3D printing
 - Test assembly
-____________________________________Original text_________________________________________________
+- - - - - - - - - - - - - - - Original text - - - - - - - - - - - - - - - - - - 
 # DarkLight Cover/Calibrator (DLC)
 https://www.youtube.com/watch?v=G-Wl4XsGtBc
 
