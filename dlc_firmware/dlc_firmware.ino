@@ -45,7 +45,7 @@ const uint32_t timeToMoveCover = 5000;  //(ms) time it takes to move between ope
 //----- (UA) (COVER) PRIMARY SERVO PARAMETERS -----
 const uint16_t primaryServoMinPulseWidth = 500; //refer to servo manufacture for usec pulses and set accordingly
 const uint16_t primaryServoMaxPulseWidth = 2500; //refer to servo manufacture for usec pulses and set accordingly
-const uint8_t primaryServoOpenCoverAngle = 0; //position angle servo opens to, value between (0-180), *may need to be adjusted based on the type of servo used
+const uint8_t primaryServoOpenCoverAngle = 8; //position angle servo opens to, value between (0-180), *may need to be adjusted based on the type of servo used
 const uint8_t primaryServoCloseCoverAngle = 180; //position angle servo closes to, value between (0-180), *may need to be adjusted based on the type of servo used
 
 //----- (UA) (COVER) SECONDARY SERVO PARAMETERS -----
@@ -115,11 +115,11 @@ const uint8_t chOneHeater = 5;
 const uint8_t chTwoHeater = 6;
 const uint8_t chTwoHeatTempSensor = 7;
 const uint8_t dhtSensor = 8;
-const uint8_t primeServo = 9;
-const uint8_t secondServo = 10;
+const uint8_t primeServo = 10;
+const uint8_t secondServo = 9;
 //PIN 13 RESERVED for LED_BUILTIN
-const uint8_t servoButton = A1;
-const uint8_t lightButton = A2;
+const uint8_t servoButton = 5; //A1;
+const uint8_t lightButton = 4; //A2;
 //PIN A4 RESERVED for BME280 I2C -> SDA
 //PIN A5 RESERVED for BME280 I2C -> SCL
 
@@ -141,7 +141,7 @@ uint8_t heaterState; //reports # 0:NotPresent, 1:Off, 3:On, 4:Unknown, 5:Error, 
 
 //----- COVER -----
 #ifdef COVER_INSTALLED
-  #include <dlcServo.h>
+  #include "dlcServo.h"
   uint8_t moveCoverTo; //1:Closed, 3:Open
   uint8_t previousMoveCoverTo; //holds previous start position of cover
   uint32_t startServoTimer; //holds start time for servo
