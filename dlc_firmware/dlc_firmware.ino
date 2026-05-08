@@ -45,15 +45,15 @@ const uint32_t timeToMoveCover = 5000;  //(ms) time it takes to move between ope
 //----- (UA) (COVER) PRIMARY SERVO PARAMETERS -----
 const uint16_t primaryServoMinPulseWidth = 500; //refer to servo manufacture for usec pulses and set accordingly
 const uint16_t primaryServoMaxPulseWidth = 2500; //refer to servo manufacture for usec pulses and set accordingly
-const uint8_t primaryServoOpenCoverAngle = 8; //position angle servo opens to, value between (0-180), *may need to be adjusted based on the type of servo used
-const uint8_t primaryServoCloseCoverAngle = 180; //position angle servo closes to, value between (0-180), *may need to be adjusted based on the type of servo used
+const uint16_t primaryServoOpenCoverAngle = 0; //position angle servo opens to, value between (0-180), *may need to be adjusted based on the type of servo used
+const uint16_t primaryServoCloseCoverAngle = 270; //position angle servo closes to, value between (0-180), *may need to be adjusted based on the type of servo used
 
 //----- (UA) (COVER) SECONDARY SERVO PARAMETERS -----
 //#define SECONDARY_SERVO_INSTALLED //uncomment if using additional servo
 const uint16_t secondaryServoMinPulseWidth = 500; //refer to servo manufacture for usec pulses and set accordingly
 const uint16_t secondaryServoMaxPulseWidth = 2500; //refer to servo manufacture for usec pulses and set accordingly
-const uint8_t secondaryServoOpenCoverAngle = 0; //position angle servo opens to, value between (0-180), *may need to be adjusted based on the type of servo used
-const uint8_t secondaryServoCloseCoverAngle = 180; //position angle servo closes to, value between (0-180), *may need to be adjusted based on the type of servo used
+const uint16_t secondaryServoOpenCoverAngle = 0; //position angle servo opens to, value between (0-180), *may need to be adjusted based on the type of servo used
+const uint16_t secondaryServoCloseCoverAngle = 270; //position angle servo closes to, value between (0-180), *may need to be adjusted based on the type of servo used
 
 //----- (UA) (COVER) SELECT A MOVEMENT -----
 //----- UNCOMMENT ONLY ONE OPTION, SEE MANUAL FOR DETAILS -----
@@ -968,17 +968,17 @@ void initializeVariables(){
         float progress = (float)(currentServoTimer - startServoTimer + elapsedMoveTime) / timeToMoveCover;
         progress = constrain(progress, 0.0, 1.0); //stay within bounds
 
-        uint8_t primaryServoPreviousCoverAngle;  
-        uint8_t primaryServoTargetPosition = (moveCoverTo == 3) ? primaryServoOpenCoverAngle : primaryServoCloseCoverAngle;
+        uint16_t primaryServoPreviousCoverAngle;  
+        uint16_t primaryServoTargetPosition = (moveCoverTo == 3) ? primaryServoOpenCoverAngle : primaryServoCloseCoverAngle;
 
         #ifdef SECONDARY_SERVO_INSTALLED
-          uint8_t secondaryServoPreviousCoverAngle;  
-          uint8_t secondaryServoTargetPosition = (moveCoverTo == 3) ? secondaryServoOpenCoverAngle : secondaryServoCloseCoverAngle;
+          uint16_t secondaryServoPreviousCoverAngle;  
+          uint16_t secondaryServoTargetPosition = (moveCoverTo == 3) ? secondaryServoOpenCoverAngle : secondaryServoCloseCoverAngle;
         #endif
 
-        uint8_t primaryServoCurrentCoverAngle = calculateServoPosition(currentServoTimer, startServoTimer, primaryServoLastPosition, primaryServoTargetPosition, progress, primaryServoRemainingDistance, primaryServoOpenCoverAngle, primaryServoCloseCoverAngle);
+        uint16_t primaryServoCurrentCoverAngle = calculateServoPosition(currentServoTimer, startServoTimer, primaryServoLastPosition, primaryServoTargetPosition, progress, primaryServoRemainingDistance, primaryServoOpenCoverAngle, primaryServoCloseCoverAngle);
         #ifdef SECONDARY_SERVO_INSTALLED
-          uint8_t secondaryServoCurrentCoverAngle = calculateServoPosition(currentServoTimer, startServoTimer, secondaryServoLastPosition, secondaryServoTargetPosition, progress, secondaryServoRemainingDistance, secondaryServoOpenCoverAngle, secondaryServoCloseCoverAngle);
+          uint16_t secondaryServoCurrentCoverAngle = calculateServoPosition(currentServoTimer, startServoTimer, secondaryServoLastPosition, secondaryServoTargetPosition, progress, secondaryServoRemainingDistance, secondaryServoOpenCoverAngle, secondaryServoCloseCoverAngle);
         #endif
   
         if (primaryServoCurrentCoverAngle != primaryServoPreviousCoverAngle) {
