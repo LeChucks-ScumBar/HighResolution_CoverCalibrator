@@ -1,2 +1,7 @@
 #ignore the following
 build/
+/schematics/HR_CoverCalibrator_schematic/AutoFlat.Pcb
+/schematics/HR_CoverCalibrator_schematic/Sheet1.SchDoc
+/schematics/HR_CoverCalibrator_schematic/__Previews
+/schematics/HR_CoverCalibrator_schematic/History
+/schematics/HR_CoverCalibrator_schematic/Project Logs for AutoFlat
