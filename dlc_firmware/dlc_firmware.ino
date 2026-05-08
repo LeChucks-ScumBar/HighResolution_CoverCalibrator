@@ -45,8 +45,8 @@ const uint32_t timeToMoveCover = 5000;  //(ms) time it takes to move between ope
 //----- (UA) (COVER) PRIMARY SERVO PARAMETERS -----
 const uint16_t primaryServoMinPulseWidth = 500; //refer to servo manufacture for usec pulses and set accordingly
 const uint16_t primaryServoMaxPulseWidth = 2500; //refer to servo manufacture for usec pulses and set accordingly
-const uint16_t primaryServoOpenCoverAngle = 0; //position angle servo opens to, value between (0-180), *may need to be adjusted based on the type of servo used
-const uint16_t primaryServoCloseCoverAngle = 270; //position angle servo closes to, value between (0-180), *may need to be adjusted based on the type of servo used
+const uint16_t primaryServoOpenCoverAngle = 270; //position angle servo opens to, value between (0-180), *may need to be adjusted based on the type of servo used
+const uint16_t primaryServoCloseCoverAngle = 0; //position angle servo closes to, value between (0-180), *may need to be adjusted based on the type of servo used
 
 //----- (UA) (COVER) SECONDARY SERVO PARAMETERS -----
 //#define SECONDARY_SERVO_INSTALLED //uncomment if using additional servo
