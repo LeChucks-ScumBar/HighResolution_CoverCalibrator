@@ -1,12 +1,12 @@
 /*
-  Name:         DarkLight Cover Calibrator (DLC)
-  Author:       Nathan Woelfle
+  Name:         High resolution Flat
+  Author:       Nathan Woelfle and Patrick Staden
   Contributors: Taylor J (Initial Dew Heater Integration)
-  Date:         6/27/25
+  Date:         14/05/26
 
-  Version: 1.2.0
+  Version: 2.0.0
   *View GitHub Wiki for version change details
-  https://github.com/10thTeeAstronomy/DarkLight_CoverCalibrator/wiki/Firmware-Version-History
+https://github.com/LeChucks-ScumBar/HighResolution_CoverCalibrator
   
   Description: The DarkLight Cover Calibrator is a DIY project to build a 
                 motorized telescope cover, flat panel, or a combined flip-flat system.
@@ -34,7 +34,7 @@
 #define LIGHT_INSTALLED //comment out if not utilized
 //#define HEATER_INSTALLED //comment out if not utilized
 #define ENABLE_SERIAL_CONTROL //comment out if not utilized
-#define ENABLE_MANUAL_CONTROL //comment out if not utilized
+//#define ENABLE_MANUAL_CONTROL //comment out if not utilized
 //#define ENABLE_SAVING_TO_MEMORY //comment out if not utilized
 //#define SHOW_HEARTBEAT //for debugging purposes only. shows loop is active, uncomment to flash builtin led
 const uint32_t serialSpeed = 115200; //values are: (9600, 19200, 38400, 57600, (default 115200), 230400)
@@ -45,7 +45,7 @@ const uint32_t timeToMoveCover = 5000;  //(ms) time it takes to move between ope
 //----- (UA) (COVER) PRIMARY SERVO PARAMETERS -----
 const uint16_t primaryServoMinPulseWidth = 500; //refer to servo manufacture for usec pulses and set accordingly
 const uint16_t primaryServoMaxPulseWidth = 2500; //refer to servo manufacture for usec pulses and set accordingly
-const uint16_t primaryServoOpenCoverAngle = 270; //position angle servo opens to, value between (0-180), *may need to be adjusted based on the type of servo used
+const uint16_t primaryServoOpenCoverAngle = 200; //position angle servo opens to, value between (0-180), *may need to be adjusted based on the type of servo used
 const uint16_t primaryServoCloseCoverAngle = 0; //position angle servo closes to, value between (0-180), *may need to be adjusted based on the type of servo used
 
 //----- (UA) (COVER) SECONDARY SERVO PARAMETERS -----
@@ -53,8 +53,8 @@ const uint16_t primaryServoCloseCoverAngle = 0; //position angle servo closes to
 const uint16_t secondaryServoMinPulseWidth = 500; //refer to servo manufacture for usec pulses and set accordingly
 const uint16_t secondaryServoMaxPulseWidth = 2500; //refer to servo manufacture for usec pulses and set accordingly
 const uint16_t secondaryServoOpenCoverAngle = 0; //position angle servo opens to, value between (0-180), *may need to be adjusted based on the type of servo used
-const uint16_t secondaryServoCloseCoverAngle = 270; //position angle servo closes to, value between (0-180), *may need to be adjusted based on the type of servo used
-
+const uint16_t secondaryServoCloseCoverAngle = 90; //position angle servo closes to, value between (0-180), *may need to be adjusted based on the type of servo used
+uint16_t newValue = 4500;
 //----- (UA) (COVER) SELECT A MOVEMENT -----
 //----- UNCOMMENT ONLY ONE OPTION, SEE MANUAL FOR DETAILS -----
 #define USE_LINEAR
@@ -71,8 +71,8 @@ uint16_t maxBrightness = 4095; //choose one of the following max number of steps
 bool autoON = false; //adjust only if using manual-only mode, see manual for details 
 
 //----- (UA) (HEATER) -----
-const uint32_t heaterShutoff = 3600000; //(ms) max time for manual heating (3600000 = one hour)
-const float deltaPoint = 5.0;  //(degrees) target temperature difference above ambient temp for dew control
+//const uint32_t heaterShutoff = 3600000; //(ms) max time for manual heating (3600000 = one hour)
+//const float deltaPoint = 5.0;  //(degrees) target temperature difference above ambient temp for dew control
 
 //----- (UA) (HEATER) NUMBER OF HEATING MODULES -----
 //----- UNCOMMENT UP TO TWO (2) HEATERS, SEE MANUAL FOR DETAILS -----
@@ -94,7 +94,7 @@ const uint32_t debounceDelay = 150; //(ms) debounce time for the buttons *may ne
 //------------ VARIABLE DECLARATION -------------
 
 //----- VERSIONING CONTROL -----
-const char* dlcVersion = "v1.2.0";
+const char* dlcVersion = "v2.0.0";
 
 //----- MEMORY -----
 #ifdef ENABLE_SAVING_TO_MEMORY
@@ -109,10 +109,10 @@ const char* dlcVersion = "v1.2.0";
 #endif
 
 //----- PIN ASSIGNMENT -----
-const uint8_t lightPanel = 3;
+//const uint8_t lightPanel = 3;
 const uint8_t chOneHeatTempSensor = 4;
-const uint8_t chOneHeater = 5;
-const uint8_t chTwoHeater = 6;
+//const uint8_t chOneHeater = 5;
+//const uint8_t chTwoHeater = 6;
 const uint8_t chTwoHeatTempSensor = 7;
 const uint8_t dhtSensor = 8;
 const uint8_t primeServo = 10;
@@ -132,8 +132,8 @@ uint8_t heaterState; //reports # 0:NotPresent, 1:Off, 3:On, 4:Unknown, 5:Error, 
 #ifdef ENABLE_SERIAL_CONTROL
   const char startMarker = '<'; //signal to process serial command
   const char endMarker = '>'; //signal that serial command is finished
-  const uint8_t maxNumReceivedChars = 10; //set max num of characters in array
-  const uint8_t maxNumSendChars = 75; //set max num of characters in array
+  const uint8_t maxNumReceivedChars = 15; //set max num of characters in array
+  const uint8_t maxNumSendChars = 80; //set max num of characters in array
   char receivedChars[maxNumReceivedChars]; //set array
   bool commandComplete = false; //flag to process command when end marker received
   char response[maxNumSendChars];
@@ -143,7 +143,7 @@ uint8_t heaterState; //reports # 0:NotPresent, 1:Off, 3:On, 4:Unknown, 5:Error, 
 #ifdef COVER_INSTALLED
   #include "dlcServo.h"
   uint8_t moveCoverTo; //1:Closed, 3:Open
-  uint8_t previousMoveCoverTo; //holds previous start position of cover
+  uint16_t previousMoveCoverTo; //holds previous start position of cover
   uint32_t startServoTimer; //holds start time for servo
   uint32_t elapsedMoveTime = 0; //holds time servo moved
   bool halt = false; //flag to stop servo movement
@@ -176,14 +176,19 @@ uint8_t heaterState; //reports # 0:NotPresent, 1:Off, 3:On, 4:Unknown, 5:Error, 
 
 //----- LIGHT -----
 #ifdef LIGHT_INSTALLED
-  const uint16_t brightnessSteps = 4095 / maxBrightness; //set steps size based on maxBrightness
+  #include "Wire.h"
+  #include "MCP4725.h"
+  MCP4725 MCP(0x60);
+  const uint16_t brightnessSteps = 1; //4095.0 / maxBrightness; //set steps size based on maxBrightness
   uint32_t startLightTimer; //holds start time for light
   uint32_t stabilizeTime; //set delay to give light time to settle
   uint16_t lightValue = 0; //lightValue received and adjusted for Arduino
+  uint16_t dacValue = 0;        // MCP4725 Wer
   uint16_t broadbandValue; //holds saved EEPROM value
   uint16_t narrowbandValue; //holds saved EEPROM value
   uint16_t previousLightPanelValue; //holds last ON value
 #endif
+
 
 //----- MANUAL OPERATION -----
 #ifdef ENABLE_MANUAL_CONTROL
@@ -264,11 +269,11 @@ uint8_t heaterState; //reports # 0:NotPresent, 1:Off, 3:On, 4:Unknown, 5:Error, 
 //---------------------------------------
 
 void setup(){
-  pinMode(lightPanel, OUTPUT);
+  //pinMode(lightPanel, OUTPUT);
   pinMode(primeServo, OUTPUT);
   pinMode(secondServo, OUTPUT);
-  pinMode(chOneHeater, OUTPUT);
-  pinMode(chTwoHeater, OUTPUT);
+  //pinMode(chOneHeater, OUTPUT);
+  //pinMode(chTwoHeater, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(servoButton, INPUT_PULLUP); //enable internal pull-up resistor
   pinMode(lightButton, INPUT_PULLUP); //enable internal pull-up resistor
@@ -281,6 +286,13 @@ void setup(){
 
   #if defined(ENABLE_SERIAL_CONTROL)
     initializeComms();
+  #endif
+
+  
+  #ifdef LIGHT_INSTALLED
+  Wire.begin();
+  MCP.begin();
+  MCP.setValue(dacValue);
   #endif
 }//end of setup
 
@@ -353,7 +365,7 @@ void initializeVariables(){
     
       //set default broadband value if none exists
       if (broadbandValue <= 0){
-        broadbandValue = 25;
+        broadbandValue = 500;
       }
     
       //set default narrowband value if none exists
@@ -369,8 +381,8 @@ void initializeVariables(){
     
     #ifdef LIGHT_INSTALLED
       previousLightPanelValue = 4095; //sets default value
-      broadbandValue = 0; //set for operation
-      narrowbandValue = 0; //set for operation
+      broadbandValue = 500; //set for operation
+      narrowbandValue = 2500; //set for operation
     #endif
   #endif
   
@@ -581,9 +593,11 @@ void initializeVariables(){
       //goto Broadband & Narrowband values
       case 'G':
         if (cmdParameter[0] == 'B') {
-          lightValue = broadbandValue / brightnessSteps;
+          //lightValue = broadbandValue / brightnessSteps;
+          lightValue = broadbandValue;
         } else {
-          lightValue = narrowbandValue / brightnessSteps;
+          //lightValue = narrowbandValue / brightnessSteps;
+          lightValue = narrowbandValue;
         }
         itoa(lightValue, response, 10);  //convert integer to string
         respondToCommand(response);
@@ -807,7 +821,7 @@ void initializeVariables(){
 
         if (adjustingBrightness && (millis() - lastBrightnessAdjustTime) >= 1000) { //check if it's time to adjust
           //convert PWM value back to step level
-          lightValue = lightValue / brightnessSteps;
+          //lightValue = lightValue / brightnessSteps;
 
           if (lightValue >= maxBrightness) {
               brightnessDirection = -1; //start decreasing
@@ -1079,7 +1093,9 @@ void initializeVariables(){
 
   #ifdef ENABLE_SERIAL_CONTROL
     void getCurrentBrightness(){
-      itoa(lightValue / brightnessSteps, response, 10); //convert integer to string
+      //itoa(lightValue / brightnessSteps, response, 10); //convert integer to string
+      //itoa(lightValue, response, 10); //convert integer to string
+       snprintf(response, maxNumSendChars, "%u", dacValue);
     }
 
     void getMaxBrightness(){
@@ -1088,17 +1104,22 @@ void initializeVariables(){
   #endif
 
   void turnPanelTo(){
-    lightValue = lightValue * brightnessSteps; //determine the lightValue based on number of brightess steps
+    //dacValue = map(lightValue, 0, maxBrightness, 0, 4095); //determine the lightValue based on number of brightess steps
+    dacValue = constrain(lightValue, 0, 4095);
+    if(newValue != dacValue){
+        newValue = dacValue;
+        MCP.setValue(dacValue);
+    }
     calibratorState = 2; //set to 2:Not Ready
-    analogWrite(lightPanel, lightValue); //turn light to
-
+    //analogWrite(lightPanel, lightValue); //turn light to
     startLightTimer = millis(); //start timer for stabilizeLight
   }//end of turnPanelON
   
   void turnPanelOff(){
-    analogWrite(lightPanel, 0);
+    //analogWrite(lightPanel, 0);
     lightValue = 0;
     calibratorState = 1;  //1:Off
+    MCP.setValue(0);
   }//end of turnPanelOff
   
   void monitorLightChange(){
