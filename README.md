@@ -2,15 +2,9 @@ This project ist forked from https://github.com/10thTeeAstronomy/DarkLight_Cover
 
 I have developed a high-resolution flat panel. It has 4,095 brightness levels instead of just 255. In addition, the controller uses an adjustable current source without PWM, enabling constant brightness without flickering.
 
-Current status as of May 2, 2026: 
-- Software runs on Arduino and Nina
-- Circuit diagram created and simulated
 
-Pending
-- Upload circuit diagram/PCB to Git
-- Order/build electronics
-- 3D printing
-- Test assembly
+
+
 - - - - - - - - - - - - - - - Original text - - - - - - - - - - - - - - - - - - 
 # DarkLight Cover/Calibrator (DLC)
 https://www.youtube.com/watch?v=G-Wl4XsGtBc
